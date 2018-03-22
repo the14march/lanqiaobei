@@ -26,6 +26,7 @@ def upload_file():
             filename = secure_filename(file.filename)
             timestamp = int(time.time())
             save_path = os.path.join(os.path.dirname(__file__), app.config['UPLOAD_FOLDER'], str(timestamp), filename)
+            os.makedirs(os.path.join(os.path.dirname(__file__), app.config['UPLOAD_FOLDER'], str(timestamp)))
             file.save(save_path)
             return_list = get_similar_images(os.path.dirname(save_path))
             return render_template("return_images.html", return_list=return_list)
