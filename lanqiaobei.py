@@ -1,6 +1,7 @@
 import os
 import time
 from flask import Flask, request, redirect, url_for, send_from_directory, render_template
+from flask_script import Manager
 from werkzeug.utils import secure_filename
 
 from utils import get_similar_images
@@ -10,6 +11,7 @@ ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+manager = Manager(app)
 
 
 def allowed_file(filename):
@@ -36,4 +38,4 @@ def image_info(filename):
 
 
 if __name__ == '__main__':
-    app.run()
+    manager.run()
