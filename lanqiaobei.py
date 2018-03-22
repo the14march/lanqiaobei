@@ -1,6 +1,9 @@
 import os
+import time
 from flask import Flask, request, redirect, url_for, send_from_directory, render_template
 from werkzeug.utils import secure_filename
+
+from utils import get_similar_images
 
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
@@ -19,14 +22,17 @@ def upload_file():
         file = request.files['file']
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            file.save(os.path.join(os.path.dirname(__file__), app.config['UPLOAD_FOLDER'], filename))
-            return redirect(url_for('uploaded_file', filename=filename))
+            timestamp = int(time.time())
+            save_path = os.path.join(os.path.dirname(__file__), app.config['UPLOAD_FOLDER'], str(timestamp), filename)
+            file.save(save_path)
+            return_list = get_similar_images(os.path.dirname(save_path))
+            return render_template("return_images.html", return_list=return_list)
     return render_template("upload_file.html")
 
 
-@app.route('/uploads/<filename>')
-def uploaded_file(filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+@app.route('/image/<filename>')
+def image_info(filename):
+    return send_from_directory("images", filename)
 
 
 if __name__ == '__main__':
