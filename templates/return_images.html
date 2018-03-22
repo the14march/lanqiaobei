@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>return_list</title>
+</head>
+<body>
+<table border="1">
+<tr>
+    <th>Rank</th>
+    <th>Path</th>
+    <th>Info</th>
+    <th>Distance</th>
+</tr>
+    {% for item in return_list %}
+        <tr>
+            <td>{{ item["rank"] }}</td>
+            <td><a href="{{ url_for('image_info', filename=item["image_name"]) }}">{{ item["image_name"] }}</a></td>
+            <td>{{ item["image_info"] }}</td>
+            <td>{{ item["distance"] }}</td>
+        </tr>
+    {% endfor %}
+</table>
+</body>
+</html>

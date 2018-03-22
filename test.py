@@ -3,3 +3,4 @@
 import os
 
 print(os.path.join(os.path.dirname(__file__), 'uploads', "filename"))
+print(os.path.abspath(__file__))
