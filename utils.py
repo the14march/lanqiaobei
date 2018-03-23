@@ -3,25 +3,26 @@
 """
     Created by kai at 2018/3/22
 """
-import os
 import turicreate as tc
 
 
 def get_similar_images(pic_path):
     dirname = "./images"
+
     # 加载图片库
     data = tc.image_analysis.load_images(dirname)
     data = data.add_row_number()
     images_info = list(data)
 
+    # 建立相应模型
     model = tc.image_similarity.create(data)
 
-    # tc.Image(data[0]['path']).show()
     # 查询相似的图片
     pic_info = tc.image_analysis.load_images(pic_path)
     pic_info = pic_info.add_row_number()
     similar_images = model.query(pic_info, k=10)
-    # 相似图片的序号
+
+    # 相似图片的信息
     similar_images_info = list(similar_images)
 
     # 返回信息
@@ -37,6 +38,6 @@ def get_similar_images(pic_path):
             "rank": rank,
             "image_info": image_info,
             "image_name": image_name,
-            "distance" : distance
+            "distance": distance
         })
     return return_list
